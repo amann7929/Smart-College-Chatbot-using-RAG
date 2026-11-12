@@ -1,0 +1,41 @@
+# Optional: run MySQL 8 (and the Adminer web UI) in Docker instead of installing MySQL.
+#   docker compose up -d
+#   -> MySQL on localhost:3306, Adminer on http://localhost:8080 (System: MySQL, server: db)
+# Then use in backend/.env:
+#   DATABASE_URL=mysql+pymysql://college_user:ChangeThisDbPass123@127.0.0.1:3306/college_chatbot
+services:
+  db:
+    image: mysql:8.0
+    container_name: clgbot-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: RootChangeMe123
+      MYSQL_DATABASE: college_chatbot
+      MYSQL_USER: college_user
+      MYSQL_PASSWORD: ChangeThisDbPass123
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-time-zone=+00:00
+      --transaction-isolation=READ-COMMITTED
+    ports:
+      - "3306:3306"
+    volumes:
+      - clgbot_mysql_data:/var/lib/mysql
+      - ./database/docker-init-test-db.sql:/docker-entrypoint-initdb.d/10-test-db.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pRootChangeMe123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  adminer:
+    image: adminer:4
+    container_name: clgbot-adminer
+    restart: unless-stopped
+    depends_on: [db]
+    ports:
+      - "8080:8080"
+
+volumes:
+  clgbot_mysql_data:

@@ -1,0 +1,33 @@
+@import '@fontsource-variable/inter';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-slate-50 text-slate-800 antialiased dark:bg-navy-950 dark:text-slate-200; font-feature-settings: 'cv11', 'ss01'; }
+  :focus-visible { @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-white dark:ring-offset-navy-950; }
+  ::selection { @apply bg-brand-200 text-navy-900; }
+  * { scrollbar-width: thin; scrollbar-color: theme('colors.slate.300') transparent; }
+  .dark * { scrollbar-color: theme('colors.navy.700') transparent; }
+}
+
+@layer components {
+  .card { @apply rounded-2xl border border-slate-200/80 bg-white shadow-card dark:border-navy-800 dark:bg-navy-900; }
+  .input { @apply w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:opacity-60 dark:border-navy-700 dark:bg-navy-950 dark:text-slate-100 dark:placeholder-slate-500; }
+  .input-error { @apply border-red-400 focus:border-red-500 focus:ring-red-500/30; }
+  .gradient-text { @apply bg-gradient-to-r from-brand-600 to-violet-600 bg-clip-text text-transparent; }
+  .skeleton { @apply relative overflow-hidden rounded-lg bg-slate-200/80 dark:bg-navy-800; }
+  .skeleton::after { content: ''; @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/5; animation: shimmer 1.4s infinite; }
+}
+
+/* Markdown inside assistant answers */
+.answer { @apply prose prose-sm max-w-none dark:prose-invert prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5 prose-headings:mb-2 prose-headings:mt-4 prose-headings:font-semibold prose-a:text-brand-600 dark:prose-a:text-brand-300; }
+.answer code { @apply rounded bg-brand-50 px-1 py-0.5 text-[0.8em] font-medium text-brand-700 before:content-none after:content-none dark:bg-navy-800 dark:text-brand-200; }
+.answer pre { @apply overflow-x-auto rounded-xl bg-navy-900 p-3 text-slate-100 dark:bg-navy-950; }
+.answer pre code { @apply bg-transparent p-0 text-slate-100 dark:bg-transparent dark:text-slate-100; }
+.answer table { @apply block w-full overflow-x-auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
